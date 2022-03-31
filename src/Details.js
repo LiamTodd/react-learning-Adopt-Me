@@ -1,6 +1,8 @@
 import { Component } from "react/cjs/react.production.min";
 import { withRouter } from "react-router-dom";
 import Carousel from "./Carousel";
+import ErrorBoundary from "./ErrorBoundary";
+import ThemeContext from "./ThemeContext";
 
 // class component (old)
 class Details extends Component {
@@ -24,14 +26,13 @@ class Details extends Component {
     });
   }
   render() {
-    console.log(this.state.animalImages)
     if (this.state.loading) {
       return <h2>...loading</h2>;
     }
     return (
       // <div className="image-container">
       <div className="details">
-        <Carousel images = {this.state.animalImages} ></Carousel>
+        <Carousel images={this.state.animalImages}></Carousel>
         <div>
           <h1>{this.state.name}</h1>
           <h2>
@@ -40,11 +41,24 @@ class Details extends Component {
           <p>{this.state.description}</p>
         </div>
         <div>
-          <button>Adopt {this.state.name}</button>
+          <ThemeContext.Consumer>
+            {([themeHook]) => (
+              <button style={{ backgroundColor: themeHook }}>
+                Adopt {this.state.name}
+              </button>
+            )}
+          </ThemeContext.Consumer>
         </div>
       </div>
     );
   }
 }
 
-export default withRouter(Details);
+const DetailsWithRouter = withRouter(Details);
+export default function DetailsWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <DetailsWithRouter></DetailsWithRouter>
+    </ErrorBoundary>
+  );
+}
