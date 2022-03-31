@@ -1,5 +1,6 @@
 import { Component } from "react/cjs/react.production.min";
 import { withRouter } from "react-router-dom";
+import Carousel from "./Carousel";
 
 // class component (old)
 class Details extends Component {
@@ -19,21 +20,18 @@ class Details extends Component {
       animal: json.pets[0].animal,
       breed: json.pets[0].breed,
       description: json.pets[0].description,
-      image: json.pets[0].images[0],
+      animalImages: json.pets[0].images,
     });
   }
   render() {
+    console.log(this.state.animalImages)
     if (this.state.loading) {
       return <h2>...loading</h2>;
     }
     return (
       // <div className="image-container">
       <div className="details">
-        <img
-          className="image-container"
-          src={this.state.image}
-          alt={this.state.name}
-        ></img>
+        <Carousel images = {this.state.animalImages} ></Carousel>
         <div>
           <h1>{this.state.name}</h1>
           <h2>
