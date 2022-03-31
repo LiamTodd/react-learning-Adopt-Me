@@ -8,8 +8,17 @@ class Carousel extends Component{
         };
     }
 
+    // for the case that not images of the pet can be found
     static defaultProps = {
         images: ["http://pets-images.dev-apis.com/pets/none.jpg"]
+    }
+
+    // handle what happens when the images are clicked (not buttons, so no inbuilt listeners)
+    handleIndexClick = (event) => {
+        console.log(event.target.dataset.imageindex)
+        this.setState({
+            active: event.target.dataset.imageindex
+        })
     }
 
     render () {
@@ -24,6 +33,8 @@ class Carousel extends Component{
                         <img
                         key={photo}
                         src={photo}
+                        data-imageindex={index}
+                        onClick={this.handleIndexClick}
                         className={index=== active ? "active" : ""}
                         alt="animal thumbnail"
                         >
